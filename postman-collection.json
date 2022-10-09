@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "71fc8b42-1688-47ac-9906-049229f75a69",
+		"name": "X265 Encoder API",
+		"description": "HAR To Postman Generated Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ping",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL1}}/",
+					"host": [
+						"{{baseURL1}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseURL1}}/videos",
+					"host": [
+						"{{baseURL1}}"
+					],
+					"path": [
+						"videos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/var/home/djaka/Videos/output.mp4"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL1}}/videos",
+					"host": [
+						"{{baseURL1}}"
+					],
+					"path": [
+						"videos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload by url",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "url",
+							"value": "https://download.samplelib.com/mp4/sample-5s.mp4",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseURL1}}/videos/upload-by-url",
+					"host": [
+						"{{baseURL1}}"
+					],
+					"path": [
+						"videos",
+						"upload-by-url"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL1",
+			"value": "http://localhost:3000",
+			"type": "any"
+		}
+	]
+}
