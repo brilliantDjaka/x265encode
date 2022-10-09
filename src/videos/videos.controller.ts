@@ -19,6 +19,6 @@ export class VideosController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return this.videosService.upload(file);
+    return this.videosService.insert(file.buffer, file.originalname, file.size);
   }
 }

@@ -17,18 +17,15 @@ export class VideosService {
   getAll() {
     return this.videoRepo.find({ order: { id: 'desc' } });
   }
-  async upload(file: Express.Multer.File) {
+  async insert(buffer: Buffer, fileName: string, size: number) {
     const video = await this.videoRepo.insert({
-      fileName: file.originalname,
-      fileSize: file.size,
+      fileName: fileName,
+      fileSize: size,
     });
     const id: number = video.identifiers[0].id;
     mkdir(`./uploads/${id}/`, { recursive: true })
       .then(() => {
-        return writeFile(
-          `./uploads/${id}/raw${extname(file.originalname)}`,
-          file.buffer,
-        );
+        return writeFile(`./uploads/${id}/raw${extname(fileName)}`, buffer);
       })
       .then(() => {
         return this.videoRepo.update(id, { saved: true });
@@ -40,7 +37,7 @@ export class VideosService {
         return this.videoRepo.update(id, { jobId: +bullJob.id });
       })
       .then(() => {
-        Logger.log('Success Saving File', VideosService.name);
+        Logger.log(`Success Saving File #${id}`, VideosService.name);
       });
 
     return id;
