@@ -42,3 +42,12 @@ docker run --rm -p 6379:6379 -d docker.io/library/redis
 ```
 npm run start:dev
 ```
+
+## Todo
+- [x] Direct file upload
+- [ ] Upload by URL
+    - [x] General URLs (need improvement)
+    - [ ] Google Drive Support
+    - [ ] Mega.nz Support
+    - [ ] Other Provider Support
+- [ ] Batch / compressed file support
