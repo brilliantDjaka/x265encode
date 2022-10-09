@@ -7,6 +7,7 @@ import { extname } from 'path';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { spawn } from 'child_process';
+import { Readable } from 'stream';
 
 @Injectable()
 export class VideosService {
@@ -17,7 +18,7 @@ export class VideosService {
   getAll() {
     return this.videoRepo.find({ order: { id: 'desc' } });
   }
-  async insert(buffer: Buffer, fileName: string, size: number) {
+  async insert(stream: Readable, fileName: string, size: number) {
     const video = await this.videoRepo.insert({
       fileName: fileName,
       fileSize: size,
@@ -25,7 +26,7 @@ export class VideosService {
     const id: number = video.identifiers[0].id;
     mkdir(`./uploads/${id}/`, { recursive: true })
       .then(() => {
-        return writeFile(`./uploads/${id}/raw${extname(fileName)}`, buffer);
+        return writeFile(`./uploads/${id}/raw${extname(fileName)}`, stream);
       })
       .then(() => {
         return this.videoRepo.update(id, { saved: true });
