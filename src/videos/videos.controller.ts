@@ -32,6 +32,6 @@ export class VideosController {
     )
     file: Express.Multer.File,
   ) {
-    return this.videosService.insert(file.stream, file.originalname, file.size);
+    return this.videosService.insert(file.buffer, file.originalname, file.size);
   }
 }

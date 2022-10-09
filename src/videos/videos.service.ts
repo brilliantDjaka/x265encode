@@ -18,7 +18,7 @@ export class VideosService {
   getAll() {
     return this.videoRepo.find({ order: { id: 'desc' } });
   }
-  async insert(stream: Readable, fileName: string, size: number) {
+  async insert(data: Readable | Buffer, fileName: string, size: number) {
     const video = await this.videoRepo.insert({
       fileName: fileName,
       fileSize: size,
@@ -26,7 +26,7 @@ export class VideosService {
     const id: number = video.identifiers[0].id;
     mkdir(`./uploads/${id}/`, { recursive: true })
       .then(() => {
-        return writeFile(`./uploads/${id}/raw${extname(fileName)}`, stream);
+        return writeFile(`./uploads/${id}/raw${extname(fileName)}`, data);
       })
       .then(() => {
         return this.videoRepo.update(id, { saved: true });
