@@ -23,6 +23,9 @@ export class Video {
   @Column({ type: 'boolean', default: false })
   finished: boolean;
 
+  @Column({ type: 'boolean', default: false })
+  error: boolean;
+
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 }

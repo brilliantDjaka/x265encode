@@ -1,6 +1,9 @@
 import {
   Controller,
+  FileTypeValidator,
   Get,
+  MaxFileSizeValidator,
+  ParseFilePipe,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -18,7 +21,17 @@ export class VideosController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File) {
+  uploadFile(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 3000 * 1048576 }),
+          new FileTypeValidator({ fileType: /mp4|mov|avi|mkv/ }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
+  ) {
     return this.videosService.insert(file.buffer, file.originalname, file.size);
   }
 }

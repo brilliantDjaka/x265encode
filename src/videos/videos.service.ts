@@ -66,9 +66,9 @@ export class VideosService {
           resolve();
         } else reject();
       });
-    });
-
-    await this.videoRepo.update(videoId, { finished: true });
+    })
+      .catch(() => this.videoRepo.update(videoId, { error: true }))
+      .then(() => this.videoRepo.update(videoId, { finished: true }));
 
     return;
   }
