@@ -6,7 +6,7 @@ import { writeFile, mkdir } from 'fs/promises';
 import { extname } from 'path';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { spawn, spawnSync } from 'child_process';
+import { spawn } from 'child_process';
 
 @Injectable()
 export class VideosService {
