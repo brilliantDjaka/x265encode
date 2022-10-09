@@ -33,7 +33,8 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
     "sqlite3": "^5.1.2",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.10",
+    "url-file-size": "^1.0.5-1"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

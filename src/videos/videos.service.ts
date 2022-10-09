@@ -14,6 +14,8 @@ export class VideosService {
   constructor(
     @InjectRepository(Video) private readonly videoRepo: Repository<Video>,
     @InjectQueue('video') private readonly videoQueue: Queue<number>,
+    @InjectQueue('download')
+    private readonly downloadQueue: Queue<Record<string, unknown>>,
   ) {}
   getAll() {
     return this.videoRepo.find({ order: { id: 'desc' } });
@@ -72,5 +74,11 @@ export class VideosService {
       .then(() => this.videoRepo.update(videoId, { finished: true }));
 
     return;
+  }
+
+  async uploadByUrl(url: string) {
+    // TODO add size validation
+    await this.downloadQueue.add({ url });
+    return 'ok';
   }
 }

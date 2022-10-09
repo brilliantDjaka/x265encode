@@ -1,4 +1,6 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
   FileTypeValidator,
   Get,
@@ -9,6 +11,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
+import { UploadByUrlDto } from './dto/upload-by-url.dto';
 import { VideosService } from './videos.service';
 
 @Controller('videos')
@@ -33,5 +37,18 @@ export class VideosController {
     file: Express.Multer.File,
   ) {
     return this.videosService.insert(file.buffer, file.originalname, file.size);
+  }
+
+  @Post('upload-by-url')
+  uploadByUrl(@Body() uploadByUrlDto: UploadByUrlDto) {
+    if (
+      ['.mp4', '.mov', '.avi', '.mkv'].includes(extname(uploadByUrlDto.url)) ===
+      false
+    ) {
+      throw new BadRequestException(
+        `url extension mustbe 'mp4', 'mov', 'avi', 'mkv'`,
+      );
+    }
+    return this.videosService.uploadByUrl(uploadByUrlDto.url);
   }
 }
