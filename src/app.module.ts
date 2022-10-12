@@ -4,6 +4,7 @@ import { BullModule } from '@nestjs/bull';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { VideosModule } from './videos/videos.module';
+import { DownloaderModule } from './downloader/downloader.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { VideosModule } from './videos/videos.module';
       },
     }),
     VideosModule,
+    DownloaderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

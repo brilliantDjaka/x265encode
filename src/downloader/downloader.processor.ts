@@ -4,7 +4,7 @@ import { Job } from 'bull';
 import { createReadStream, createWriteStream } from 'fs';
 import { basename } from 'path';
 import { get } from 'https';
-import { VideosService } from './videos.service';
+import { VideosService } from '../videos/videos.service';
 
 @Processor('download')
 export class DownloaderProcessor {

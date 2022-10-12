@@ -9,6 +9,10 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  Param,
+  Response,
+  Res,
+  StreamableFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { extname } from 'path';
@@ -21,6 +25,15 @@ export class VideosController {
   @Get()
   getAll() {
     return this.videosService.getAll();
+  }
+  @Get(':id')
+  async download(
+    @Res() res: Response,
+    @Param('id') videoId: number,
+  ): Promise<StreamableFile> {
+    const stream = await this.videosService.download(videoId);
+    // TODO find way how to download file instead streaming
+    return new StreamableFile(stream);
   }
 
   @Post()

@@ -1,13 +1,19 @@
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Video } from 'src/videos/entity/video.entity';
 import { Repository } from 'typeorm';
-import { writeFile, mkdir } from 'fs/promises';
+import { mkdir, writeFile } from 'fs/promises';
 import { extname } from 'path';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { spawn } from 'child_process';
 import { Readable } from 'stream';
+import { createReadStream } from 'fs';
 
 @Injectable()
 export class VideosService {
@@ -80,5 +86,23 @@ export class VideosService {
     // TODO add size validation
     await this.downloadQueue.add({ url });
     return 'ok';
+  }
+
+  async download(videoId: number): Promise<Readable> {
+    const video = await this.videoRepo.findOne({
+      where: {
+        id: videoId,
+      },
+    });
+    if (video === null) {
+      throw new NotFoundException();
+    }
+    if (video.saved === false) {
+      throw new BadRequestException();
+    }
+
+    return createReadStream(
+      `uploads/${videoId}/encoded${extname(video.fileName)}`,
+    );
   }
 }
